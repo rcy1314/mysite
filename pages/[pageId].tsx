@@ -1,21 +1,15 @@
-import React from 'react'
+import * as React from 'react'
 import { isDev, domain } from 'lib/config'
 import { getSiteMaps } from 'lib/get-site-maps'
 import { resolveNotionPage } from 'lib/resolve-notion-page'
 import { NotionPage } from 'components'
 
-export const getStaticProps = async (context) => {
-  const rawPageId = context.params.pageId as string
+// Get page props from pageId.
+export const getStaticProps = async ({ params }) => {
+  const rawPageId = params.pageId as string
+
 
   try {
-    if (rawPageId === 'sitemap.xml' || rawPageId === 'robots.txt') {
-      return {
-        redirect: {
-          destination: `/api/${rawPageId}`
-        }
-      }
-    }
-
     const props = await resolveNotionPage(domain, rawPageId)
 
     return { props, revalidate: 10 }
@@ -28,6 +22,7 @@ export const getStaticProps = async (context) => {
   }
 }
 
+// Get the page data from the props.
 export async function getStaticPaths() {
   if (isDev) {
     return {
@@ -46,11 +41,9 @@ export async function getStaticPaths() {
         }
       }))
     ),
-    // paths: [],
     fallback: true
   }
 
-  console.log(ret.paths)
   return ret
 }
 
