@@ -1,24 +1,14 @@
+// const isDev = process.env.NODE_ENV === 'development' || !process.env.NODE_ENV
 
-const withPlugins = require('next-compose-plugins')
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true'
 })
 
-module.exports = withPlugins([[withBundleAnalyzer]], {
-  staticPageGenerationTimeout: 300,
+module.exports = withBundleAnalyzer({
   images: {
-    domains: [
-      'www.notion.so',
-      'notion.so',
-      'images.unsplash.com',
-      'pbs.twimg.com',
-      'abs.twimg.com',
-      's3.us-west-2.amazonaws.com',
-      'nexon-demo.vercel.app'
-    ],
-    formats: ['image/avif', 'image/webp'],
-    dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;"
+    domains: ['pbs.twimg.com']
+  },
+  future: {
+    webpack5: true
   }
 })
