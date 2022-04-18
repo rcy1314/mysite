@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import * as React from 'react'
 import * as types from 'lib/types'
 import { PageHead } from './PageHead'
@@ -9,7 +10,14 @@ export const Page404: React.FC<types.PageProps> = ({ site, pageId, error }) => {
 
   return (
     <>
-      <PageHead site={site} title={title} />
+      <PageHead site={site} />
+
+      <Head>
+        <meta property='og:site_name' content={title} />
+        <meta property='og:title' content={title} />
+
+        <title>{title}</title>
+      </Head>
 
       <div className={styles.container}>
         <main className={styles.main}>
@@ -20,8 +28,7 @@ export const Page404: React.FC<types.PageProps> = ({ site, pageId, error }) => {
           ) : (
             pageId && (
               <p>
-                Make sure that Notion page &quot;{pageId}&quot; is publicly
-                accessible.
+                Make sure that Notion page "{pageId}" is publicly accessible.
               </p>
             )
           )}

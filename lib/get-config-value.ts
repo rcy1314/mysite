@@ -1,12 +1,11 @@
 import rawSiteConfig from '../site.config'
-import { SiteConfig } from './site-config'
 
 if (!rawSiteConfig) {
-  throw new Error(`Config error: invalid site.config.ts`)
+  throw new Error(`Config error: invalid site.config.js`)
 }
 
-// allow environment variables to override site.config.ts
-let siteConfigOverrides: SiteConfig
+// TODO: allow environment variables to override site.config.js
+let siteConfigOverrides
 
 try {
   if (process.env.NEXT_PUBLIC_SITE_CONFIG) {
@@ -17,7 +16,7 @@ try {
   throw err
 }
 
-const siteConfig: SiteConfig = {
+const siteConfig = {
   ...rawSiteConfig,
   ...siteConfigOverrides
 }
