@@ -1,7 +1,7 @@
 /**
  * This file contains site-specifc style overrides for Notion elements from
  * react-notion-x.
- * 
+ *
  * react-notion-x's goal is to match styling as close as possible to Notion,
  * whereas our goal with this site is to adjust Notion's styling in a few key
  * places to add some flare.
@@ -17,8 +17,21 @@
   line-height: 1.65;
 }
 
-.index-page {
+.index-page,
+.tags-page {
   --notion-max-width: 900px;
+}
+
+.tags-page .notion-collection-header {
+  display: none;
+}
+
+.tags-page .notion-gallery {
+  padding-top: 2em;
+}
+
+.tags-page .notion-gallery-grid {
+  padding-top: 4em;
 }
 
 .notion-text {
@@ -34,36 +47,39 @@
   margin-bottom: 1em;
 }
 
-.notion-header .nav-header {
-  max-width: 1100px;
+.notion-asset-wrapper-video > div,
+.notion-asset-wrapper-video video {
+  width: 100% !important;
+}
+
+.notion-header .notion-nav-header {
   margin: 0 auto;
 }
 
-.notion-gallery-grid {
-  display: grid;
-  position: relative; 
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
-  grid-auto-rows: 1fr; 
-  gap: 16px;
-  border-top: 1px solid rgb(77, 81, 83); 
-  padding-top: 16px; padding-bottom: 4px;
-  grid-gap: 3vmin;
-  gap: 3vmin;
+.notion-nav-header-rhs {
+  gap: 0.5rem;
 }
 
-.notion-gallery-grid .notion-page-icon {
+.notion-gallery-grid {
+  /* only one column in a row. */
+  grid-template-columns: 1fr;
+  grid-gap: 6vmin;
+  gap: 6vmin;
+}
+
+@media (min-width: 640px) {
+  .notion-gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(calc(720px / 2), 1fr)); /* columns = [1, 2, 3 ...] */
+  }
+}
+
+.notion-gallery-grid .notion-page-icon-inline {
   display: none;
 }
 
 .notion-gallery-grid .notion-page-title-text {
-  white-space: nowrap;
-  word-break: break-word;
-  font-size: 14px;
-  line-height: 1.5;
-  min-height: 21px;
-  font-weight: 500;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 2em;
+  white-space: unset;
 }
 
 .notion-gallery-grid .notion-collection-card-property {
@@ -76,24 +92,11 @@
 }
 
 .notion-collection-card {
-  border-radius: 6px;
   box-shadow: none;
-  background: rgb(135 131 120 / 15%);
-  box-shadow: rgb(15 15 15 / 10%) 0px 0px 0px 1px, rgb(15 15 15 / 10%) 0px 2px 4px;
-}
-
-.notion-collection-card-cover img {
-  border-radius: 6px 6px 0px 0px;
 }
 
 .notion-collection-card {
   overflow: visible;
-}
-
-.notion-collection-card-cover {
-  border-radius: 6px;
-  overflow: visible;
-  box-shadow: 2px 2px 8px 4px rgba(15, 15, 15, 0.1);
 }
 
 .notion-collection-card-cover {
@@ -102,8 +105,8 @@
   filter: none;
 }
 
-.notion-collection-card:hover .notion-collection-card-cover {
-  filter: brightness(120%);
+.notion-collection-card-body {
+  padding: 10px;
 }
 
 /* only target safari */
@@ -135,32 +138,12 @@
   margin: 2em 0;
 }
 
-@media only screen and (max-width: 920px) {
-  .index-page.notion-page {
-    padding-left: 2vw;
-    padding-right: 2vw;
-  }
+.notion-page {
+  @apply px-0 sm:px-2;
 }
 
-@media only screen and (max-width: 720px) {
-  .notion-page {
-    padding-left: 2vw;
-    padding-right: 2vw;
-  }
-}
-
-@media only screen and (max-width: 600px) {
-  .notion-search-button {
-    display: none !important;
-  }
-}
-
-@media only screen and (max-width: 400px) {
-  .notion-gallery-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    grid-gap: 10vmin;
-    gap: 10vmin;
-  }
+.notion-text {
+  @apply px-2;
 }
 
 .notion .notion-page-icon-cover {
@@ -173,8 +156,12 @@
   text-align: center;
 }
 
-.notion-collection-column-title {
-  display: none !important;
+.notion-collection-row {
+  padding-bottom: 1em;
+}
+
+.notion-collection-page-properties .notion-collection-column-title {
+  display: none;
 }
 
 .notion-collection-row-property .notion-property {
@@ -183,17 +170,28 @@
 }
 
 .notion-collection-row-value {
+  display: flex;
+  align-items: center;
   padding: 0;
+  min-height: 23px;
 }
 
-.notion-page-cover {
-  max-width: 1200px;
-  border-radius: 6px;
+.notion-page-cover-wrapper {
   box-shadow: 2px 2px 8px 4px rgba(15, 15, 15, 0.1);
 }
 
+.notion-page-cover-hero {
+  cursor: grab;
+}
+
+.notion-page-cover-hero:active {
+  cursor: grabbing;
+}
+
 @media only screen and (max-width: 1200px) {
-  .notion-page-cover {
+  .notion-page-cover-wrapper,
+  .notion-page-cover-wrapper span,
+  .notion-page-cover-wrapper img {
     border-radius: 0;
   }
 }
@@ -213,12 +211,33 @@
   position: relative;
   transition: unset;
   opacity: 1;
+  border-bottom-width: 0.08rem;
 }
 
+.notion-link:focus,
 .notion-link:hover {
-  border-width: 3px;
-  border-image: linear-gradient(90.68deg, #b439df 0.26%, #e5337e 102.37%);
-  border-image-slice: 1;
+  border-bottom-style: none;
+}
+
+.notion-link:focus::after,
+.notion-link:hover::after {
+  visibility: visible;
+  width: 100%;
+  left: 0;
+}
+
+.notion-link::after {
+  content: '';
+  position: absolute;
+  bottom: -0.1rem;
+  left: 50%;
+  width: 0;
+  height: 0.1rem;
+  transform: scaleX(1);
+  transition-property: width, left;
+  transition-duration: 300ms;
+  visibility: hidden;
+  background: linear-gradient(90.68deg, #b439df 0.26%, #e5337e 102.37%);
 }
 
 .notion-red_background,
@@ -306,29 +325,41 @@
   );
 }
 
-.dark-mode .notion-red_background,
-.dark-mode .notion-pink_background,
-.dark-mode .notion-blue_background,
-.dark-mode .notion-purple_background,
-.dark-mode .notion-teal_background,
-.dark-mode .notion-yellow_background,
-.dark-mode .notion-orange_background,
-.dark-mode .notion-brown_background,
-.dark-mode .notion-gray_background {
+.dark .notion-red_background,
+.dark .notion-pink_background,
+.dark .notion-blue_background,
+.dark .notion-purple_background,
+.dark .notion-teal_background,
+.dark .notion-yellow_background,
+.dark .notion-orange_background,
+.dark .notion-brown_background,
+.dark .notion-gray_background {
   padding: 0;
   margin: 0;
   border-radius: 0;
   background: none !important;
 }
 
-.notion-block-f382a57807bc40779860eb079d0144f2 .lazy-image-wrapper {
-  border-radius: 16px;
+.notion-row {
+  overflow: unset;
 }
 
-/* if you don't want rounded page images, remove this */
-.notion-page-icon-wrapper img.notion-page-icon {
+.notion-block-f382a57807bc40779860eb079d0144f2 img.medium-zoom-image {
+  border-radius: 8px;
+  box-shadow: 4px 4px 24px rgb(0 0 0 / 21%);
+}
+.notion-block-f382a57807bc40779860eb079d0144f2 span {
+  overflow: visible !important;
+}
+
+/* if you don't want rounded page icon images, remove this */
+.notion-page-icon-hero.notion-page-icon-image {
   border-radius: 50%;
-  box-shadow: 0 8px 40px 0 rgb(0 0 0 / 21%);
+  box-shadow: 4px 4px 24px 0 rgb(0 0 0 / 21%);
+}
+.notion-page-icon-hero.notion-page-icon-image span,
+.notion-page-icon-hero.notion-page-icon-image img {
+  border-radius: 50%;
 }
 
 .notion-header {
@@ -336,10 +367,17 @@
   backdrop-filter: saturate(180%) blur(16px);
 }
 
-.dark-mode .notion-header {
+.dark .notion-header {
   background: transparent;
   box-shadow: inset 0 -1px 0 0 rgba(0, 0, 0, 0.1);
   backdrop-filter: saturate(180%) blur(8px);
+}
+
+/* Workaround for Firefox not supporting backdrop-filter yet */
+@-moz-document url-prefix() {
+  .dark .notion-header {
+    background: hsla(203, 8%, 20%, 0.8);
+  }
 }
 
 .notion-bookmark:hover {
